@@ -39,7 +39,7 @@ class Model
 
     public static function getRandomId()
     {
-        $bookDB = self::showBookList();
+        $bookDB = self::getBookList();
         do {
             $bool = false;
             $id = rand(100, 999);
@@ -81,7 +81,7 @@ class Model
         }
     }
 
-    public static function showBookList()
+    public static function getBookList()
     {
         $bookDB = self::getBookDB();
         $bookList = array();
@@ -94,7 +94,7 @@ class Model
 
     public static function editBook($dataForm)
     {
-        $bookDB = self::showBookList();
+        $bookDB = self::getBookList();
         foreach ($bookDB as $item) {
             if ($item->getId() == $dataForm['id']) {
                 $item->setId($dataForm['id']);
@@ -111,7 +111,7 @@ class Model
 
     public static function searchBook($value)
     {
-        $bookDB = self::showBookList();
+        $bookDB = self::getBookList();
         $resultSearch = array();
         foreach ($bookDB as $item) {
             if ($item->getId() == $value) {
@@ -133,9 +133,9 @@ class Model
         return $resultSearch;
     }
 
-    public static function removeBook($id)
+    public static function deleteBook($id)
     {
-        $bookDB = self::showBookList();
+        $bookDB = self::getBookList();
         foreach ($bookDB as $key => $item) {
             if ($item->getId() == $id) {
                 unset($bookDB[$key]);
@@ -147,8 +147,9 @@ class Model
 
     public static function destroySession()
     {
-        session_destroy();
+        unset($_SESSION['books']);
     }
+
 
 
 }

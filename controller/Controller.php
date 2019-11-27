@@ -10,7 +10,7 @@ class Controller
         if (!$action) $action = isset($_POST['action']) ? $_POST['action'] : 'index';
         switch ($action) {
             case 'index':
-                $bookList = Model::showBookList();
+                $bookList = Model::getBookList();
                 include "view/bookList.php";
                 break;
             case 'createBook':
@@ -24,7 +24,7 @@ class Controller
                     !empty($dataForm['publishingYear']) &&
                     !empty($dataForm['production'])) {
                     if (Model::createBook()) {
-                        $bookList = Model::showBookList();
+                        $bookList = Model::getBookList();
                         include 'view/bookList.php';
                         echo "<script>alert(\"Successfully created!\")</script>";
                     }
@@ -35,12 +35,12 @@ class Controller
                 break;
             case 'editBook':
                 $dataForm = Model::getDataForm();
-                $bookList = Model::showBookList();
+                $bookList = Model::getBookList();
                 include "view/editBook.php";
                 break;
             case 'confirmModify':
                 $dataForm = Model::getDataForm();
-                $bookList = Model::showBookList();
+                $bookList = Model::getBookList();
                 if (Model::editBook($dataForm)) {
                     include 'view/bookList.php';
                     echo "<script>alert(\"Your data has modified!\")</script>";
@@ -57,7 +57,7 @@ class Controller
                 if (!empty($bookList)) {
                     include "view/bookList.php";
                 } else {
-                    $bookList = Model::showBookList();
+                    $bookList = Model::getBookList();
                     include "view/bookList.php";
                     echo "<script>alert(\"Value '$value' does not exist!\")</script>";
                 }
@@ -66,7 +66,7 @@ class Controller
                 $id = isset($_POST['id']) ? $_POST['id'] : false;
                 $dataForm = Model::getDataForm();
                 if ($id) {
-                    Model::removeBook($dataForm['id']);
+                    Model::deleteBook($dataForm['id']);
                     header("Location:index.php");
                 } else {
                     echo "<script>alert(\"Couldn't find id!\")</script>";
@@ -79,7 +79,7 @@ class Controller
                 break;
             case 'destroySession':
                 Model::destroySession();
-                $bookList = Model::showBookList();
+                $bookList = Model::getBookList();
                 header("Location:index.php");
                 break;
         }
